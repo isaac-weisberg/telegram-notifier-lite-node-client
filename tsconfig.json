@@ -1,0 +1,8 @@
+{
+    "compilerOptions": {
+        "removeComments": true,
+        "allowUnreachableCode": false,
+        "target": "es6",
+        "module": "commonjs",
+    }
+}
