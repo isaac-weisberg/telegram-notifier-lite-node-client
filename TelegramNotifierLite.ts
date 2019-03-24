@@ -1,9 +1,17 @@
 import { TelegramNotifier } from "./TelegramNotifier";
-import * as http from "http";
+import * as http from "http"; 
+
+/*
+`import *` statement is generally unwarranted 
+and only the necessary members must be imported like
+
+import { ClientRequest, IncomingMessage } from 'http'
+*/
+
 
 export class TelegramNotifierLite implements TelegramNotifier {
 
-    baseUri: string;
+    baseUri: string; // Semicolons not needed
     port: number;
     token: string;
 
@@ -14,6 +22,9 @@ export class TelegramNotifierLite implements TelegramNotifier {
     }
 
     public send(data: any, token = ""): Promise<any> {
+        // JSON.stringify is a function that throws
+        // Errors should be handled here in a try/catch block. 
+        // Might as well make the function async
         const json = JSON.stringify({
             token: token || this.token,
             message: JSON.stringify(data, null, 2)
@@ -29,6 +40,11 @@ export class TelegramNotifierLite implements TelegramNotifier {
             }
         }
 
+        /*
+        Following type is `Promise<any>`
+        but it's unclear why exactly it is `any`
+        because it's obvious that you resolve it with `http.IncomingMessage`
+        */
         return new Promise<any>(
             (resolve, reject) => {
                 const req = http.request(options, (res: http.IncomingMessage) => {
